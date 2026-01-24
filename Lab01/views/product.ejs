@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <title>Product Manager</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-gray-100 min-h-screen">
+  <div class="max-w-5xl mx-auto p-6">
+
+    <!-- HEADER -->
+    <div class="flex justify-between items-center mb-8">
+      <h1 class="text-3xl font-bold text-gray-800">Product Management</h1>
+      <a href="/logout" class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600">
+        Logout
+      </a>
+    </div>
+
+    <!-- FORM -->
+    <div class="bg-white rounded-lg shadow p-6 mb-8">
+      <h2 class="text-xl font-semibold mb-4">
+        <%= editProduct ? "Edit Product" : "Add Product" %>
+      </h2>
+
+      <form action="/products/save" method="post" class="grid grid-cols-1 md:grid-cols-4 gap-4">
+
+        <input type="hidden" name="id" value="<%= editProduct ? editProduct.id : '' %>" />
+
+        <div>
+          <label>Name</label>
+          <input name="name" required value="<%= editProduct ? editProduct.name : '' %>"
+            class="w-full border rounded px-3 py-2" />
+        </div>
+
+        <div>
+          <label>Price</label>
+          <input type="number" min="0" name="price" required value="<%= editProduct ? editProduct.price : '' %>"
+            class="w-full border rounded px-3 py-2" />
+        </div>
+
+        <div>
+          <label>Quantity</label>
+          <input type="number" min="0" name="quantity" required value="<%= editProduct ? editProduct.quantity : '' %>"
+            class="w-full border rounded px-3 py-2" />
+        </div>
+
+        <div class="flex items-end gap-2">
+          <button class="w-full bg-blue-600 text-white px-4 py-2 rounded">
+            <%= editProduct ? "Update" : "Add" %>
+          </button>
+
+          <% if (editProduct) { %>
+            <a href="/products" class="w-full text-center border px-4 py-2 rounded">
+              Cancel
+            </a>
+            <% } %>
+        </div>
+      </form>
+    </div>
+
+    <!-- TABLE -->
+    <div class="bg-white rounded-lg shadow overflow-hidden">
+      <table class="w-full text-sm">
+        <thead class="bg-gray-200">
+          <tr>
+            <th class="px-4 py-3">ID</th>
+            <th class="px-4 py-3">Name</th>
+            <th class="px-4 py-3">Price</th>
+            <th class="px-4 py-3">Quantity</th>
+            <th class="px-4 py-3 text-center">Action</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y">
+          <% products.forEach(p=> { %>
+            <tr>
+              <td class="px-4 py-3">
+                <%= p.id %>
+              </td>
+              <td class="px-4 py-3">
+                <%= p.name %>
+              </td>
+              <td class="px-4 py-3">
+                <%= p.price %>
+              </td>
+              <td class="px-4 py-3">
+                <%= p.quantity %>
+              </td>
+              <td class="px-4 py-3 text-center space-x-2">
+                <a href="/products/edit/<%= p.id %>" class="bg-yellow-400 text-white px-3 py-1 rounded">
+                  Edit
+                </a>
+                <a href="/products/delete/<%= p.id %>" onclick="return confirm('Delete this product?')"
+                  class="bg-red-500 text-white px-3 py-1 rounded">
+                  Delete
+                </a>
+              </td>
+            </tr>
+            <% }) %>
+        </tbody>
+      </table>
+    </div>
+
+  </div>
+</body>
+
+</html>
